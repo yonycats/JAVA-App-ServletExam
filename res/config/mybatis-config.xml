@@ -18,11 +18,11 @@
   	
 	<!-- jdbcType이 ForNull인 경우에 대해서 NULL로 처리를 하겠다고 설정을 해둠 (atchFile.xml) -->
 	<!-- 데이터 등록시 해당 속성값이 존재하지 않으면 부적합한 열 유형 : 1111 예외 발생함
-		  이 경우 해당타입을 명시적으로 알려주건디 아래와 같이 NULL값에 대해 특정값으로 설정이 가능하다. -->
+		  이 경우 해당타입을 명시적으로 알려주거나 아래와 같이 NULL값에 대해 특정값으로 설정이 가능하다. -->
 	<!-- Oracle '부적합한 열 유형: 1111' null처리하기
 		 Spring mybatis 사용시 insert, update 할 때 null값이 들어가면 부적합한 열 유형 오류가 발생한다.
 		 null 값을 허용하려면 매핑되는 값 뒤에 jdbcType = 타입 을 넣어주면 된다
-		 mybatis 설정 파일(xml)을 변경하면 한번에 해결할 수 있다.
+		 mybatis 설정 파일(mybatis-config.xml)을 변경하면 한번에 해결할 수 있다.
 		 configuration 사이에 settings를 추가하면 된다.
 		 settings는 가장 위에 추가 해야 오류가 안난다. 
 		 https://dev-handbook.tistory.com/74 -->

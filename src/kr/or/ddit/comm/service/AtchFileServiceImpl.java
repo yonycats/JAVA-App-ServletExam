@@ -18,14 +18,14 @@ public class AtchFileServiceImpl implements IAtchFileService {
 	
 	private static IAtchFileService fileService = new AtchFileServiceImpl();
 	
+	public static IAtchFileService getInstance() {
+		return fileService;
+	}
+	
 	private IAtchFileDao fileDao;
 	
 	public AtchFileServiceImpl() {
 		fileDao = AtchFileDaoImpl.getInstance();
-	}
-	
-	public static IAtchFileService getInstance() {
-		return fileService;
 	}
 	
 	@Override
@@ -34,6 +34,7 @@ public class AtchFileServiceImpl implements IAtchFileService {
 		// 업로드할 경로 지정/만들기
 		String uploadPath = "d:/D_Other/upload_files";
 		
+		// 파일 경로를 넣은 파일 객체 생성자 만들기
 		File uploadDir = new File(uploadPath);
 		
 		if (!uploadDir.exists()) {
@@ -42,7 +43,7 @@ public class AtchFileServiceImpl implements IAtchFileService {
 		
 		AtchFileVO atchFileVO = null;
 		
-		boolean isFirstFile = true; // 첫번째 파일인지 여부 확인
+		boolean isFirstFile = true; // 첫번째 파일인지 여부 확인하는 용도
 		
 		for(Part part : parts) {
 			String fileName = part.getSubmittedFileName(); // 업로드 파일명 추출하기
@@ -61,7 +62,7 @@ public class AtchFileServiceImpl implements IAtchFileService {
 					fileDao.insertAtchFile(atchFileVO); // ATCH_FILE에 insert하기
 				}
 				
-				long fileSize = part.getSize(); // 파일크기
+				long fileSize = part.getSize(); // 파일크기  
 				String saveFileName = UUID.randomUUID().toString().replace("-", ""); // 저장파일명
 				String saveFilePath = uploadPath + "/" + saveFileName; // 저장파일경로
 				
@@ -69,7 +70,7 @@ public class AtchFileServiceImpl implements IAtchFileService {
 				String fileExtension = fileName.lastIndexOf(".") < 0 ? "" : fileName.substring(fileName.lastIndexOf(".") + 1);
 				
 				try {
-					// 업로드 파일 저장하기
+					// 업로드를 할 파일 경로 저장하기
 					part.write(saveFilePath);
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -78,7 +79,8 @@ public class AtchFileServiceImpl implements IAtchFileService {
 				// 이제 db에 인서트 작업 시작
 				// VO에 정보 세팅하기
 				AtchFileDetailVO atchFileDetailVO = new AtchFileDetailVO();
-				atchFileDetailVO.setAtchFileId(atchFileVO.getAtchFileId()); // 마이바티스가 xml에서 여기에 정보를 저장해줌
+				// insertAtchFile()를 실행하고 마이바티스 xml에서 selectKey를 실행한 순간, atchFileId에 값이 세팅됨
+				atchFileDetailVO.setAtchFileId(atchFileVO.getAtchFileId()); // 마이바티스가 xml에서 atchFileVO에 정보를 저장해줌, 가져오기
 				atchFileDetailVO.setStreFileNm(saveFileName);
 				atchFileDetailVO.setFileSize(fileSize);
 				atchFileDetailVO.setOrignlFileNm(fileName);

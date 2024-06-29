@@ -23,7 +23,12 @@
 	<insert id="insertAtchFile" parameterType="atchFileVO">
 	
 		<!-- resultType : keyProperty 속성의 반환 타입을 알려주는 속성 -->
-		<!-- order : 디폴트값, 순서 지정, BEFORE -> 내부쿼리에 대해서 BEFORE 지정 -->
+		<!-- keyProperty : selectKey의 구문결과가 맵핑될 프로퍼티명 -->
+		
+		<!-- order : 디폴트값, 순서 지정 -->
+		<!-- BEFORE -> 쿼리 삽입 전 값 가져오기, mapper.xml에서 구문에 지정한 ParameterType으로 값이 반환되므로 이에 대해 잘 알고 이용해야 함.
+			 AFTER -> 쿼리 실행 후 값 가져오기, mapper.xml에서 명시한 ParameterType으로 반환되지 않음. -->
+			 <!-- https://blog.naver.com/bshey1/223330895224 -->
 		<selectKey keyProperty="atchFileId" resultType="long" order="BEFORE">
 			select atch_file_seq.nextval from dual
 		</selectKey>
@@ -58,7 +63,8 @@
 			#{streFileNm},
 			#{orignlFileNm},
 			#{fileExtsn},
-<!-- 			PreparedStatementsms에서 인트로 받을때와 스트링으로 받을때가 구분되어있기 때문에 타입을 명시적으로 지정해줘야 함 -->
+			<!-- PreparedStatementsms에서 int로 받을 때와 String으로 받을 때가 
+			구분되어있기 때문에(오버라이딩 메소드가 2개라서) 타입을 명시적으로 지정해줘야 함 -->
 <!-- 			#{fileCn, jdbcType=VARCHAR}, config 파일에서 설정을 해뒀기 때문에 이제 명시적으로 타입을 명시하지 않아도 됨 -->
 			#{fileCn},
 			#{fileSize}
@@ -100,6 +106,8 @@
 	
 	</resultMap>
 	
+<!-- 	resultType : 해당 구문으로 반환된 결과의 타입 -->
+<!-- 	resultMap : 해당 구문으로 반환된 결과의 타입으로 구성된 map(외부 resultMap) -->
 	
 	<!-- 첨부파일 목록 전체를 가져오기 위한 목적의 쿼리, 가져오는 값은 0또는 1-->
 	<select id="getAtchFile" resultMap="atchFileMap">
