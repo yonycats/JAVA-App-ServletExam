@@ -3,15 +3,20 @@ package kr.or.ddit.member.controller;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import kr.or.ddit.comm.service.AtchFileServiceImpl;
+import kr.or.ddit.comm.service.IAtchFileService;
+import kr.or.ddit.comm.vo.AtchFileVO;
 import kr.or.ddit.member.service.IMemberService;
 import kr.or.ddit.member.service.MemberServiceImpl;
 import kr.or.ddit.vo.MemberVO;
 
+@MultipartConfig
 @WebServlet("/member/update.do")
 public class UpdateMemberController extends HttpServlet {
 
@@ -26,6 +31,17 @@ public class UpdateMemberController extends HttpServlet {
 
 		// 리퀘스트 객체에 정보 저장
 		req.setAttribute("mv", mv);
+		
+		if (mv.getAtchFileId() > 0) { // 첨부파일이 존재하는 경우
+			IAtchFileService fileService = AtchFileServiceImpl.getInstance();
+			
+			AtchFileVO atchFileVO = new AtchFileVO();
+			atchFileVO.setAtchFileId(mv.getAtchFileId());
+			atchFileVO = fileService.getAtchFile(atchFileVO);
+			
+			// 파일이 있을 때만 값이 있고, 파일이 없을 때는 항상 null일 것임
+			req.setAttribute("atchFileVO", atchFileVO);
+		}
 		
 		req.getRequestDispatcher("/views/member/updateForm.jsp").forward(req, resp);
 	}
@@ -42,9 +58,29 @@ public class UpdateMemberController extends HttpServlet {
 		String memTel = req.getParameter("memTel");
 		String memAddr = req.getParameter("memAddr");
 		
+		//
+		long atchFileId = req.getParameter("atchFileId") == null ? -1 : Long.parseLong(req.getParameter("atchFileId")); // 기존 첨부파일 ID
+		//
+		
+		//
+		// 파일 업로드 하는 부분
+		IMemberService memberService = MemberServiceImpl.getInstance();
+		IAtchFileService fileService = AtchFileServiceImpl.getInstance();
+		
+		// 파일 업로드 처리하는 부분
+		// 새로 업로드한(수정에서) 파일 ID가 리턴됨
+		AtchFileVO atchFileVO = fileService.saveAtchFileList(req.getParts());
+		
 		MemberVO mv = new MemberVO(memId, memName, memTel, memAddr);
 		
-		IMemberService memberService = MemberServiceImpl.getInstance();
+		// 신규 파일 업로드시(업데이트에서 새로 파일 업로드)
+		// 누군가 첨부파일을 올리면 atchFileVO 객체 안에다 getAtchFileId 값을 저장해줌
+		if(atchFileVO != null) { // 새로 업로드 파일을 선택한 경우
+			mv.setAtchFileId(atchFileVO.getAtchFileId());
+		} else { // null인 경우 = 새로운 첨부파일을 선택하지 않은 경우 (기존 첨부파일을 유지하고 싶은 경우)
+			mv.setAtchFileId(atchFileId);
+		}
+		//
 		
 		int cnt = memberService.modifyMember(mv);
 		

@@ -39,7 +39,10 @@
 	<update id="updateMember" parameterType="kr.or.ddit.vo.MemberVO">
 		
 		UPDATE MYMEMBER
-		SET MEM_NAME = #{memName}, MEM_TEL = #{memTel}, MEM_ADDR = #{memAddr}, ATCH_FILE_ID = #{atchFileId},
+		SET MEM_NAME = #{memName}, 
+			MEM_TEL = #{memTel}, 
+			MEM_ADDR = #{memAddr}, 
+			ATCH_FILE_ID = #{atchFileId}
 		WHERE MEM_ID = #{memId}
 	
 	</update>
@@ -54,7 +57,12 @@
 	
 	<select id="selectAllMember" resultType="kr.or.ddit.vo.MemberVO">
 		
-		SELECT MEM_ID memId, MEM_NAME memName, MEM_TEL memTel, MEM_ADDR memAddr, REG_DT regDt, ATCH_FILE_ID as atchFileId
+		SELECT MEM_ID memId, 
+			   MEM_NAME memName, 
+			   MEM_TEL memTel, 
+			   MEM_ADDR memAddr, 
+			   REG_DT regDt, 
+			   ATCH_FILE_ID as atchFileId
 		FROM MYMEMBER
 	
 	</select>
@@ -73,7 +81,13 @@
 	<!-- 	<select id="getMember" parameterType="String" resultType="vo.MemberVO"> -->
 	<select id="getMember" resultType="kr.or.ddit.vo.MemberVO">
 		
-		SELECT MEM_ID memId, MEM_NAME memName, MEM_TEL memTel, MEM_ADDR memAddr, REG_DT regDt, ATCH_FILE_ID as atchFileId
+		SELECT MEM_ID memId, 
+			   MEM_PASS memPass, 
+			   MEM_NAME memName, 
+			   MEM_TEL memTel, 
+			   MEM_ADDR memAddr, 
+			   REG_DT regDt, 
+			   ATCH_FILE_ID as atchFileId
 		FROM MYMEMBER
 		WHERE MEM_ID = #{memId}
 	
@@ -93,7 +107,11 @@
 		<!-- VO가 아닌 List를 이용한 방식 // foreach를 써서 함 아직 안 배움, 추후에 한번 해주신다고 함-->
 	<select id="getMember3" parameterType="List" resultType="kr.or.ddit.vo.MemberVO">
 		
-		SELECT MEM_ID memId, MEM_NAME memName, MEM_TEL memTel, MEM_ADDR memAddr, REG_DT regDt
+		SELECT MEM_ID memId, 
+			   MEM_NAME memName, 
+			   MEM_TEL memTel, 
+			   MEM_ADDR memAddr, 
+			   REG_DT regDt
 		FROM MYMEMBER
 		WHERE MEM_ID = #{memId} AND MEM_NAME = #{memName}
 	

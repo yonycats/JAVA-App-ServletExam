@@ -30,7 +30,7 @@ public class DetailMemberController extends HttpServlet {
 		req.setAttribute("mv", mv);
 		
 //		getAtchFileId이 0보다 크면 파일이 있다는 의미 > 파일 꺼내기
-		if (mv.getAtchFileId() > 0) {
+		if (mv.getAtchFileId() > 0) { // 첨부파일이 존재하는 경우
 			IAtchFileService fileService = AtchFileServiceImpl.getInstance();
 			
 			AtchFileVO atchFileVO = new AtchFileVO();

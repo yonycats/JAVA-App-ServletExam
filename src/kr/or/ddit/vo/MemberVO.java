@@ -15,6 +15,7 @@ import java.time.LocalDate;
 
 public class MemberVO {
 	private String memId;
+	private String memPass;
 	private String memName;
 	private String memTel;
 	private String memAddr;
@@ -40,6 +41,14 @@ public class MemberVO {
 	
 	public void setAtchFileId(long atchFileId) {
 		this.atchFileId = atchFileId;
+	}
+	
+	public String getMemPass() {
+		return memPass;
+	}
+
+	public void setMemPass(String memPass) {
+		this.memPass = memPass;
 	}
 
 	public String getMemId() {

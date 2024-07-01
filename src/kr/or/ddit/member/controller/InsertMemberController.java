@@ -38,6 +38,7 @@ public class InsertMemberController extends HttpServlet {
 		String memTel = req.getParameter("memTel");
 		String memAddr = req.getParameter("memAddr");
 		
+		// 파일 업로드 처리하는 부분
 		IMemberService memberService = MemberServiceImpl.getInstance();
 		IAtchFileService fileService = AtchFileServiceImpl.getInstance();
 		
@@ -47,7 +48,7 @@ public class InsertMemberController extends HttpServlet {
 		
 		MemberVO mv = new MemberVO(memId, memName, memTel, memAddr);
 		
-		
+		// 신규 파일 업로드시
 		// 누군가 첨부파일을 올리면 atchFileVO 객체 안에다 getAtchFileId 값을 저장해줌
 		if(atchFileVO != null) {
 			mv.setAtchFileId(atchFileVO.getAtchFileId());

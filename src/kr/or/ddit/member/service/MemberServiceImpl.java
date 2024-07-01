@@ -12,7 +12,7 @@ public class MemberServiceImpl implements IMemberService {
 	
 	private IMemberDao memDao;
 	
-	private MemberServiceImpl() {
+	public MemberServiceImpl() {
 		memDao = MemberDaoImpl.getInstance();
 	}
 	

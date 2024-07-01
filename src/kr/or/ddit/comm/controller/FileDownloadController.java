@@ -1,4 +1,4 @@
-package kr.or.ddit.member.controller;
+package kr.or.ddit.comm.controller;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
