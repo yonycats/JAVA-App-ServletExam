@@ -51,7 +51,7 @@
   	</environments>
   	
   	
-<!--   	MyBatisUtil 에서 Resources로 config 파일을 읽어서 Reader객체를 생성 후, 
+<!--   	MyBatisUtil 에서 Reader로 config 파일을 읽어서 Reader객체를 생성 후, 
 		해당 객체를 활용하여 sqlSessionFactory 객체를 만듬, 
 		그리고 sqlSessionFactory객체로 sqlSession객체를 생성함 -->
   	<mappers>
